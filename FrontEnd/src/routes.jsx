@@ -1,8 +1,9 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
+// layout
 import MainLayout from "./layout/MainLayout";
 
+// import pages
 import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
 import Users from "./pages/Users";
@@ -14,7 +15,7 @@ function Routes() {
       path: "/",
       element: <MainLayout />,
       children: [
-        { path: "/", element: <Home /> },
+        { index: true, element: <Home /> },
         { path: "/signin", element: <SignIn /> },
         { path: "/users", element: <Users /> },
         { path: "*", element: <Error /> },

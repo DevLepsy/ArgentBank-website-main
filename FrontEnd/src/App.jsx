@@ -1,13 +1,12 @@
-import React, { Suspense } from "react";
+//route
 import Routes from "./routes";
 
-const App = () => {
+function App() {
   return (
     <div>
-      <Suspense fallback={<div>Loading...</div>} />
       <Routes />
     </div>
   );
-};
+}
 
 export default App;

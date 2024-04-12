@@ -1,29 +1,26 @@
-import React, { lazy } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
-import {
-  BrowserRouter,
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
 import "./index.css";
-import MainLayout from "./layout/MainLayout.jsx";
-import Home from "./pages/Home.jsx";
-import SignIn from "./pages/SignIn.jsx";
-import Users from "./pages/Users.jsx";
-import Error from "./pages/Error.jsx";
 
-const HomeLazy = lazy(() => import("./pages/Home.jsx"));
-const SignInLazy = lazy(() => import("./pages/SignIn.jsx"));
-const UsersLazy = lazy(() => import("./pages/Users.jsx"));
-const ErrorLazy = lazy(() => import("./pages/Error.jsx"));
+import { Provider } from "react-redux";
+import { store } from "./redux/store.js";
+
+// persist
+import { persistStore } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
+
+let persistor = persistStore(store);
 
 const rootElement = document.getElementById("root");
-
 if (rootElement) {
   ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
-      <App />
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <App />
+        </PersistGate>
+      </Provider>
     </React.StrictMode>
   );
 }
