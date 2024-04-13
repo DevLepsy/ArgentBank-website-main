@@ -17,7 +17,7 @@ paths:
             items:
               $ref: "#/definitions/Transaction"
           examples:
-            application/json: 
+            application/json:
               - id: "trans123"
                 date: "2024-03-01T09:00:00Z"
                 amount: 150.00
@@ -29,23 +29,23 @@ paths:
         401:
           description: Unauthorized - Invalid token
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
           examples:
-            application/json: 
+            application/json:
               error: "Unauthorized access - token invalid"
         403:
           description: Forbidden
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
           examples:
-            application/json: 
+            application/json:
               error: "Access forbidden - insufficient privileges"
         500:
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
           examples:
-            application/json: 
+            application/json:
               error: "Internal server error - please try again later"
     post:
       summary: Add a new transaction
@@ -58,12 +58,12 @@ paths:
           description: Object representing the new transaction
           required: true
           schema:
-            $ref: '#/definitions/Transaction'
+            $ref: "#/definitions/Transaction"
       responses:
         200:
           description: Success - Transaction successfully added
           schema:
-            $ref: '#/definitions/Transaction'
+            $ref: "#/definitions/Transaction"
           examples:
             application/json:
               id: "trans124"
@@ -77,30 +77,30 @@ paths:
         400:
           description: Bad Request - Data validation error
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
           examples:
-            application/json: 
+            application/json:
               error: "Bad Request - Missing required fields"
         401:
           description: Unauthorized - Invalid token
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
           examples:
-            application/json: 
+            application/json:
               error: "Unauthorized access - token invalid"
         403:
           description: Forbidden
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
           examples:
-            application/json: 
+            application/json:
               error: "Access forbidden - insufficient privileges"
         500:
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
           examples:
-            application/json: 
+            application/json:
               error: "Internal server error - please try again later"
   /transactions/{transactionId}:
     get:
@@ -120,7 +120,7 @@ paths:
           schema:
             $ref: "#/definitions/Transaction"
           examples:
-            application/json: 
+            application/json:
               id: "trans123"
               date: "2024-03-01T09:00:00Z"
               amount: 150.00
@@ -132,8 +132,7 @@ paths:
         401:
           description: Unauthorized - Invalid token
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
           examples:
-            application/json: 
-              error: "Unauthorized
-              
+            application/json:
+              error: "Unauthorized"
