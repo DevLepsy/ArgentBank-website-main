@@ -1,158 +1,147 @@
-swagger: '2.0'
+swagger: "2.0"
 info:
-  title: Bank Argent API documentation
-  description: Contains all available API endpoints in this codebase
-  version: '1.0.0'
-  termsOfService: 'http://swagger.io/terms/'
-host: localhost:3001
-basePath: /api/v1
-schemes:
-  - http
+  version: "1.0.0"
+  title: Transaction Management API
 paths:
-  /user/login:
-    post:
-      tags:
-        - User Module
-      summary: Login
-      description: API for Login
-      parameters:
-        - in: body
-          name: body
-          description: Login Payload
-          required: true
-          schema:
-            $ref: '#/definitions/Login'
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: Login Successfully
-          schema:
-            $ref: '#/definitions/LoginResponse'
-        '400':
-          description: Invalid Fields
-        '500':
-          description: Internal Server Error
-  /user/signup:
-    post:
-      tags:
-        - User Module
-      summary: Signup
-      description: API for Signup
-      parameters:
-        - in: body
-          name: body
-          description: Signup Payload
-          required: true
-          schema:
-            $ref: '#/definitions/User'
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: Signup Successfully
-          schema:
-            $ref: '#/definitions/ApiResponse'
-        '400':
-          description: Invalid Fields
-        '500':
-          description: Internal Server Error
-  /user/profile:
-    post:
+  /transactions:
+    get:
+      summary: Get all transactions for the current month
       security:
-        - Bearer: []
-      tags:
-        - User Module
-      summary: User Profile API
-      description: API for fetching a user profile
-      #produces:
-       # - application/json
+        - BearerAuth: []
+      description: Returns a list of all transactions made by the user for the current month.
       responses:
-        '200':
-          description: User profile retrieved successully
+        200:
+          description: Success - Retrieved list of transactions
           schema:
-            $ref: '#/definitions/ApiResponse'
-        '400':
-          description: Invalid Fields
-        '500':
+            type: array
+            items:
+              $ref: "#/definitions/Transaction"
+        401:
+          description: Unauthorized - Invalid token
+        403:
+          description: Forbiden
+        500:
+          description: Internal Server Error
+    post:
+      summary: Add a new transaction
+      security:
+        - BearerAuth: []
+      description: Adds a new transaction to the user's transaction list.
+      parameters:
+        - name: transaction
+          in: body
+          description: Object representing the new transaction
+          required: true
+          schema:
+            $ref: "#/definitions/Transaction"
+      responses:
+        200:
+          description: Success - Transaction successfully added
+        400:
+          description: Bad Request - Data validation error
+        401:
+          description: Unauthorized - Invalid token
+        403:
+          description: Forbiden
+        500:
+          description: Internal Server Error
+  /transactions/{transactionId}:
+    get:
+      summary: Get details of a transaction
+      security:
+        - BearerAuth: []
+      description: Returns the details of a specific transaction identified by {transactionId}.
+      parameters:
+        - name: transactionId
+          in: path
+          description: ID of the transaction to retrieve details
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success - Retrieved transaction details
+          schema:
+            $ref: "#/definitions/Transaction"
+        401:
+          description: Unauthorized - Invalid token
+        403:
+          description: Forbiden
+        404:
+          description: Transaction not found - Invalid transaction ID
+        500:
           description: Internal Server Error
     put:
+      summary: Update information of a transaction
       security:
-        - Bearer: []
-      tags:
-        - User Module
-      summary: User Profile API
-      description: API for updating a user profile
+        - BearerAuth: []
+      description: Updates the information of a specific transaction identified by {transactionId}.
       parameters:
-        - in: body
-          name: body
-          description: Update user profile attributes
+        - name: transactionId
+          in: path
+          description: ID of the transaction to update
+          required: true
+          type: string
+        - name: transaction
+          in: body
+          description: Object representing the new transaction information
           required: true
           schema:
-            $ref: '#/definitions/UserProfile'
-      produces:
-        - application/json
+            $ref: "#/definitions/TransactionUpdate"
       responses:
-        '200':
-          description: User profile retrieved successully
-          schema:
-            $ref: '#/definitions/ApiResponse'
-        '400':
-          description: Invalid Fields
-        '500':
+        200:
+          description: Success - Transaction successfully updated
+        400:
+          description: Bad Request - Data validation error
+        401:
+          description: Unauthorized - Invalid token
+        403:
+          description: Forbiden
+        404:
+          description: Transaction not found - Invalid transaction ID
+        500:
           description: Internal Server Error
+
 securityDefinitions:
-  Bearer:
+  BearerAuth:
     type: apiKey
     name: Authorization
     in: header
+
 definitions:
-  User:
-    properties:
-      email:
-        type: string
-        description: user email
-      password:
-        type: string
-        description: user password
-      firstName:
-        type: string
-        description: user first name
-      lastName:
-        type: string
-        description: user last name
-      userName:
-        type: string
-        description: user public name
-  Login:
-    properties:
-      email:
-        type: string
-        description: user email
-      password:
-        type: string
-        description: user password
-  ApiResponse:
+  TransactionUpdate:
     type: object
     properties:
-      status:
-        type: integer
-      message:
+      category:
         type: string
-      body:
-        type: object
-        properties:
-          id:
-            type: string
-          email:
-            type: string
-  LoginResponse:
+        description: Category of the transaction
+      note:
+        type: string
+        description: Additional note for the transaction
+  Transaction:
     type: object
     properties:
-      token:
+      id:
         type: string
-  UserProfile:
-    type: object
-    properties:
-      userName:
+        description: Transaction ID
+      date:
         type: string
+        format: date-time
+        description: Transaction date
+      amount:
+        type: number
+        description: Transaction amount
+      description:
+        type: string
+        description: Description
+      balance:
+        type: number
+        description: Balance after the transaction
+      transactionType:
+        type: string
+        description: Type of the transaction
+      category:
+        type: string
+        description: Category of the transaction
+      note:
+        type: string
+        description: Additional note for the transaction
